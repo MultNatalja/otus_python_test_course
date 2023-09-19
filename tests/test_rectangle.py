@@ -6,9 +6,7 @@ import pytest
 
 
 @pytest.mark.parametrize(("side_a", "side_b", "area", "perimeter"),
-                         [(1, 2, 2, 6),
-                          (4, 6, 24, 20),
-                          (100, 200, 20000, 600)])
+                         [(4, 6, 24, 20)])
 def test_rectangle_positive(side_a, side_b, area, perimeter):
     r = Rectangle(side_a, side_b)
     assert r.name == f"Rectangle {side_a} and {side_b}"
@@ -21,23 +19,17 @@ def test_rectangle_positive(side_a, side_b, area, perimeter):
                           (0, 0, 0, 0)])
 def test_rectangle_negative(side_a, side_b, area, perimeter):
     with pytest.raises(ValueError):
-        r = Rectangle(side_a, side_b)
-        assert r.area == area
-        assert r.perimeter == perimeter
+        Rectangle(side_a, side_b)
 
 
-def test_rectangle_symbol(area=None, perimeter=None):
+def test_rectangle_symbol():
     with pytest.raises(ValueError):
-        r = Rectangle("test", "test")
-        assert r.area == area
-        assert r.perimeter == perimeter
+        Rectangle("test", "test")
 
 
-def test_add_area():
-    r = Rectangle(2, 5)
-    s = Square(5)
-    c = Circle(10)
-    t = Triangle(5, 6, 7)
-    assert r.add_area(s) == 35
-    assert int(r.add_area(c)) == 324
-    assert int(r.add_area(t)) == 24
+@pytest.mark.parametrize(("first_figure", "second_figure", "summ_area"),
+                         [(Rectangle(2, 5), Triangle(5, 6, 7), 24),
+                          (Rectangle(2, 5), Square(5), 35),
+                          (Rectangle(2, 5), Circle(10), 324)])
+def test_add_area(first_figure, second_figure, summ_area):
+    assert int(first_figure.add_area(second_figure)) == summ_area

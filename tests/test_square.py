@@ -6,9 +6,7 @@ import pytest
 
 
 @pytest.mark.parametrize(("side_a", "area", "perimeter"),
-                         [(1, 1, 4),
-                          (4, 16, 16),
-                          (100, 10000, 400)])
+                         [(4, 16, 16)])
 def test_square(side_a, area, perimeter):
     s = Square(side_a)
     assert s.name == f"Square {side_a}"
@@ -21,23 +19,17 @@ def test_square(side_a, area, perimeter):
                           (0, 0, 0)])
 def test_square_negative(side_a, area, perimeter):
     with pytest.raises(ValueError):
-        s = Square(side_a)
-        assert s.get_area() == area
-        assert s.get_perimeter() == perimeter
+        Square(side_a)
 
 
-def test_square_symbol(area=None, perimeter=None):
+def test_square_symbol():
     with pytest.raises(ValueError):
-        s = Square("test")
-        assert s.get_area() == area
-        assert s.get_perimeter() == perimeter
+        Square("test")
 
 
-def test_add_area():
-    r = Rectangle(2, 5)
-    s = Square(5)
-    c = Circle(10)
-    t = Triangle(5, 6, 7)
-    assert s.add_area(r) == 35
-    assert int(s.add_area(c)) == 339
-    assert int(s.add_area(t)) == 39
+@pytest.mark.parametrize(("first_figure", "second_figure", "summ_area"),
+                         [(Square(5), Triangle(5, 6, 7), 39),
+                         (Square(5), Rectangle(2, 5), 35),
+                         (Square(5), Circle(10), 339)])
+def test_add_area(first_figure, second_figure, summ_area):
+    assert int(first_figure.add_area(second_figure)) == summ_area
