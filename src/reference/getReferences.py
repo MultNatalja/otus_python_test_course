@@ -10,14 +10,13 @@ def get_users(file):
     with open(file, "r") as f:
         users = json.load(f)
     for item in users:
-        user = {
+        data.append({
             "name": item["name"],
             "gender": item["gender"],
             "address": item["address"],
-            "age": item["age"],
+            "age": int(item["age"]),
             "books": []
-        }
-        data.append(user)
+        })
     return data
 
 
@@ -27,13 +26,12 @@ def get_books(file):
         reader = DictReader(f)
         books = list(reader)
     for book in books:
-        book_data = {
+        data.append({
             "title": book["Title"],
             "author": book["Author"],
-            "pages": book["Pages"],
+            "pages": int(book["Pages"]),
             "genre": book["Genre"]
-        }
-        data.append(book_data)
+        })
     return data
 
 
@@ -51,4 +49,5 @@ def make_result_file(json_file, csv_file, json_file_w):
         f.write(s)
 
 
-make_result_file(JSON_FILE, CSV_FILE, JSON_FILE_W)
+if __name__ == '__main__':
+    make_result_file(JSON_FILE, CSV_FILE, JSON_FILE_W)
