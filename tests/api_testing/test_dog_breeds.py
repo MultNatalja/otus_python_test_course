@@ -19,6 +19,7 @@ def test_random_dog_image_response_structure():
 @pytest.mark.parametrize("breed", ["bulldog", "beagle", "corgi", "pomeranian"])
 def test_sub_breeds_structure(breed):
     response = requests.get(f"{BASE_URL}/breed/{breed}/list")
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
     data = response.json()
     assert isinstance(data, dict), "Response should be a dictionary"
     assert "message" in data, "Response doesn't contain 'message' field"
@@ -29,6 +30,7 @@ def test_sub_breeds_structure(breed):
 @pytest.mark.parametrize("breed", ["hound", "retriever", "akita", "dingo"])
 def test_random_dog_images_by_breed_structure(breed):
     response = requests.get(f"{BASE_URL}/breed/{breed}/images/random/3")
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
     data = response.json()
     assert isinstance(data, dict), "Response should be a dictionary"
     assert "message" in data, "Response doesn't contain 'message' field"
@@ -39,6 +41,7 @@ def test_random_dog_images_by_breed_structure(breed):
 
 def test_all_dog_breeds_structure():
     response = requests.get(f"{BASE_URL}/breeds/list/all")
+    assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
     data = response.json()
     assert isinstance(data, dict), "Response should be a dictionary"
     assert "message" in data, "Response doesn't contain 'message' field"
